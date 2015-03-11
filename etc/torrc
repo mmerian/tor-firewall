@@ -1,0 +1,3 @@
+AutomapHostsOnResolve 1
+TransPort 9040
+DNSPort 53
