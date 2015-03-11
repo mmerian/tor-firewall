@@ -1,0 +1,62 @@
+### BEGIN INIT INFO
+# Provides:          tor-firewall
+# Required-Start:    $remote_fs $syslog $network tor
+# Required-Stop:     $remote_fs $syslog $network tor
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start Tor firewall
+# Description:       Creates firewall rules for Tor
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+NAME=tor-firewall
+TOR_SCRIPTS_DIR=/usr/local/scripts
+
+tf_start()
+{
+    $TOR_SCRIPTS_DIR/tor-iptables.sh
+}
+
+tf_stop()
+{
+    $TOR_SCRIPTS_DIR/flush-iptables.sh
+}
+
+tf_restart()
+{
+    tf_stop
+    tf_start
+}
+
+case $1 in
+    start)
+        log_daemon_msg "Starting" "$NAME"
+        tf_start
+        log_end_msg 0
+    ;;
+    stop)
+        log_daemon_msg "Stopping" "$NAME"
+        tf_stop
+        log_end_msg 0
+    ;;
+    restart)
+        log_daemon_msg "Restarting" "$NAME"
+        tf_restart
+        log_end_msg 0
+    ;;
+    reload)
+        log_daemon_msg "Restarting" "$NAME"
+        tf_restart
+        log_end_msg 0
+    ;;
+    force-reload)
+        log_daemon_msg "Restarting" "$NAME"
+        tf_restart
+        log_end_msg 0
+    ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+        exit 2
+    ;;
+esac
