@@ -83,5 +83,7 @@ $IPT -A OUTPUT ! -o lo ! -d 127.0.0.1 ! -s 127.0.0.1 -p tcp -m tcp --tcp-flags A
 $IPT -A OUTPUT ! -o lo ! -d 127.0.0.1 ! -s 127.0.0.1 -p tcp -m tcp --tcp-flags ACK,RST ACK,RST -j DROP
 
 $IPT -A OUTPUT -m owner --uid-owner $_tor_uid -j ACCEPT
+$IPT -A OUTPUT -m owner --uid-owner $_i2p_uid -j ACCEPT
+
 $IPT -A OUTPUT -p udp -j ACCEPT
 $IPT -A OUTPUT -j REJECT
