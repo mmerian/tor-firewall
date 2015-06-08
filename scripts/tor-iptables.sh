@@ -15,6 +15,13 @@ _tor_uid=`cat /etc/passwd|grep tor|cut -f 1 -d :`
 if [ -z "$_tor_uid" ]; then
     $_tor_uid=tor
 fi
+
+# i2p user id
+_i2p_uid=`cat /etc/passwd|grep i2p|cut -f 1 -d :`
+if [ -z "$_i2p_uid" ]; then
+    $_i2p_uid=i2p
+fi
+
 _trans_port=9040
 
 # Destinations that will not
@@ -46,6 +53,9 @@ $IPT -A INPUT -i lo -j ACCEPT
 # Allow all tor traffic
 $IPT -t nat -A OUTPUT -m owner --uid-owner $_tor_uid -j RETURN
 
+# Allow all i2p traffic
+$IPT -t nat -A OUTPUT -m owner --uid-owner $_i2p_uid -j RETURN
+
 # Route DNS queries through tor
 $IPT -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 53
 
@@ -75,4 +85,3 @@ $IPT -A OUTPUT ! -o lo ! -d 127.0.0.1 ! -s 127.0.0.1 -p tcp -m tcp --tcp-flags A
 $IPT -A OUTPUT -m owner --uid-owner $_tor_uid -j ACCEPT
 $IPT -A OUTPUT -p udp -j ACCEPT
 $IPT -A OUTPUT -j REJECT
-
