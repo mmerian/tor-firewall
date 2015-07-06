@@ -1,0 +1,13 @@
+[Unit]
+Description=Tor firewall rules
+After=tor.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/local/scripts/flush-iptables.sh
+ExecStart=/usr/local/scripts/tor-iptables.sh
+ExecStop=/usr/local/scripts/flush-iptables.sh
+
+[Install]
+WantedBy=multi-user.target
