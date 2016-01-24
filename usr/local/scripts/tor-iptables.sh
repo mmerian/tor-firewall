@@ -13,7 +13,7 @@ fi
 # Tor user id
 _tor_uid=`cat /etc/passwd|grep tor|cut -f 1 -d :`
 if [ -z "$_tor_uid" ]; then
-    $_tor_uid=tor
+    _tor_uid=tor
 fi
 
 _trans_port=9040
